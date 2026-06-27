@@ -321,7 +321,7 @@ import Mail from '@lucide/svelte/icons/mail';
   </footer>
 </div>
 <style>
-  .page-wrap { color: #1A1A1A; background: #fff; font-family: Poppins, sans-serif; padding-top: 56px; }
+  .page-wrap { color: #1A1A1A; background: #fff; font-family: Poppins, sans-serif; }
   @media (min-width: 768px) { .page-wrap { padding-top: 60px; } }
 
   html { scroll-behavior: smooth; }
@@ -361,7 +361,8 @@ import Mail from '@lucide/svelte/icons/mail';
   .nav-mobile-link { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; color: #1A1A1A; text-decoration: none; }
 
   /* Hero */
-  .hero { position: relative; }
+  .hero { position: relative; margin-top: -56px; }
+  @media (min-width: 768px) { .hero { margin-top: 0; } }
   .hero-desktop { display: none; position: relative; }
   @media (min-width: 768px) { .hero-desktop { display: block; } }
   .hero-img { width: 100%; object-fit: cover; height: 420px; }
@@ -374,7 +375,7 @@ import Mail from '@lucide/svelte/icons/mail';
   }
   .hero-ring-inner { border-radius: 9999px; background: white; display: flex; align-items: center; justify-content: center; overflow: hidden; width: 220px; height: 220px; }
   .hero-logo-img { width: 88%; height: 88%; object-fit: contain; }
-  .hero-mobile { display: flex; flex-direction: column; align-items: center; padding: 0 1.5rem ; min-height: 100vh; justify-content: center; overflow: hidden; position: relative; }
+  .hero-mobile { display: flex; flex-direction: column; align-items: center; padding: 56px 1.5rem 0; min-height: 100vh; justify-content: center; overflow: hidden; position: relative; }
   @media (min-width: 768px) { .hero-mobile { display: none; } }
   .hero-bg { position: absolute; inset: 0; z-index: 0; }
   .hero-bg-img {
