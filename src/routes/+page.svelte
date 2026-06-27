@@ -11,11 +11,22 @@ import Mail from '@lucide/svelte/icons/mail';
   import FaGithub from 'svelte-icons/fa/FaGithub.svelte';
   import FaTwitter from 'svelte-icons/fa/FaTwitter.svelte';
 
+  import { onMount } from 'svelte';
+
   const { data } = $props();
 
   console.log(data)
 
   let open = $state(false)
+  let scrolled = $state(false)
+
+  onMount(() => {
+    const onScroll = () => {
+      scrolled = window.scrollY > 50;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  });
 
   const PURPLE = '#4B0082'
   const GOLD = '#F5C518'
@@ -76,11 +87,15 @@ import Mail from '@lucide/svelte/icons/mail';
 <svelte:head>
   <title>Youth Arise Network | Reducing Inequality of Opportunity</title>
   <meta name="description" content="Youth Arise Network (YAN) invests in education, health and climate resilience to reduce inequality of opportunity for marginalized youth in Malawi." />
+  <!-- Preload critical hero image so it starts downloading as early as possible -->
+  <link rel="preload" as="image" href="/assets/yan-hero.jpg" fetchpriority="high" />
+  <!-- Preload the logo as well since it's above the fold -->
+  <link rel="preload" as="image" href="/assets/yan-logo.jpg" fetchpriority="high" />
 </svelte:head>
 
 <div class="page-wrap">
   <!-- NAVBAR -->
-  <nav class="navbar">
+  <nav class="navbar" class:navbar-scrolled={scrolled}>
     <div class="nav-inner">
       <button class="nav-menu-btn" aria-label="Menu" onclick={() => open = !open}>☰</button>
       <a href="#" class="nav-brand">YOUTH ARISE NETWORK</a>
@@ -103,18 +118,18 @@ import Mail from '@lucide/svelte/icons/mail';
   <!-- HERO -->
   <header class="hero">
     <div class="hero-desktop">
-      <img src="/assets/yan-hero.jpg" alt="YAN volunteers" class="hero-img" />
+      <img src="/assets/yan-hero.jpg" alt="YAN volunteers" class="hero-img" fetchpriority="high" />
       <div class="hero-logo-desktop">
         <div class="hero-ring-outer">
           <div class="hero-ring-inner">
-            <img src="/assets/yan-logo.jpg" alt="YouthArise! logo" class="hero-logo-img" />
+            <img src="/assets/yan-logo.jpg" alt="YouthArise! logo" class="hero-logo-img" fetchpriority="high" />
           </div>
         </div>
       </div>
     </div>
     <div class="hero-mobile">
       <div class="hero-bg">
-        <img src="/assets/yan-hero.jpg" alt="" class="hero-bg-img" />
+        <img src="/assets/yan-hero.jpg" alt="" class="hero-bg-img" fetchpriority="high" />
         <div class="hero-overlay"></div>
         <div class="hero-blur-overlay"></div>
       </div>
@@ -122,7 +137,7 @@ import Mail from '@lucide/svelte/icons/mail';
         <div class="hero-logo-mobile">
           <div class="hero-ring-outer-sm">
             <div class="hero-ring-inner-sm">
-              <img src="/assets/yan-logo.jpg" alt="YouthArise! logo" class="hero-logo-img-sm" />
+              <img src="/assets/yan-logo.jpg" alt="YouthArise! logo" class="hero-logo-img-sm" fetchpriority="high" />
             </div>
           </div>
         </div>
@@ -166,7 +181,7 @@ import Mail from '@lucide/svelte/icons/mail';
       <div class="grid md:grid-cols-3 gap-6">
         {#each data.initiatives as c}
           <article class="work-card">
-            <img src={c.image_file} alt={c.name} class="work-card-img" />
+            <img src={c.image_file} alt={c.name} class="work-card-img" loading="lazy" />
             <div class="work-card-body">
               <h3 class="work-card-title">{c.name}</h3>
               <p class="work-card-desc">{c.description}</p>
@@ -285,7 +300,7 @@ import Mail from '@lucide/svelte/icons/mail';
     <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-start">
       <div class="footer-brand">
         <div class="footer-logo">
-          <img src="/assets/yan-logo.jpg" alt="YouthArise! logo" class="footer-logo-img" />
+          <img src="/assets/yan-logo.jpg" alt="YouthArise! logo" class="footer-logo-img" loading="lazy" />
         </div>
         <div class="footer-donate-text">DONATE & CONTRIBUTE TO OUR CAUSE</div>
       </div>
@@ -306,7 +321,8 @@ import Mail from '@lucide/svelte/icons/mail';
   </footer>
 </div>
 <style>
-  .page-wrap { color: #1A1A1A; background: #fff; font-family: Poppins, sans-serif; }
+  .page-wrap { color: #1A1A1A; background: #fff; font-family: Poppins, sans-serif; padding-top: 56px; }
+  @media (min-width: 768px) { .page-wrap { padding-top: 60px; } }
 
   html { scroll-behavior: smooth; }
   .nav-link { position: relative; }
@@ -318,12 +334,17 @@ import Mail from '@lucide/svelte/icons/mail';
   .nav-link:hover::after { transform: scaleX(1); }
 
   /* Navbar */
-  .navbar { background: linear-gradient(90deg, #EFE7F2 0%, #FBF3E0 100%); }
-  @media (min-width: 768px) { .navbar { position: sticky; top: 0; z-index: 50; width: 100%; position: relative; } }
   .navbar {
-    position: absolute; top: 0; left: 0; right: 0; z-index: 50;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: transparent;
+    transition: background 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease;
   }
-  @media (min-width: 768px) { .navbar { position: sticky; top: 0; z-index: 50; width: 100%; } }
+  .navbar-scrolled {
+    background: rgba(239, 231, 242, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  @media (min-width: 768px) { .navbar { position: fixed; top: 0; z-index: 50; width: 100%; } }
   .nav-inner { max-width: 1280px; margin: 0 auto; padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
   @media (min-width: 768px) { .nav-inner { padding: 1rem 2.5rem; } }
   .nav-menu-btn { display: block; font-size: 1.5rem; color: #4B0082; }
@@ -353,19 +374,20 @@ import Mail from '@lucide/svelte/icons/mail';
   }
   .hero-ring-inner { border-radius: 9999px; background: white; display: flex; align-items: center; justify-content: center; overflow: hidden; width: 220px; height: 220px; }
   .hero-logo-img { width: 88%; height: 88%; object-fit: contain; }
-  .hero-mobile { display: flex; flex-direction: column; align-items: center; padding: 0 1.5rem 0.5rem; min-height: 100vh; justify-content: center; overflow: hidden; position: relative; }
+  .hero-mobile { display: flex; flex-direction: column; align-items: center; padding: 0 1.5rem ; min-height: 100vh; justify-content: center; overflow: hidden; position: relative; }
   @media (min-width: 768px) { .hero-mobile { display: none; } }
   .hero-bg { position: absolute; inset: 0; z-index: 0; }
-  .hero-bg-img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-bg-img {
+    width: 100%; height: 100%; object-fit: cover;
+    /* Show background color immediately while image loads */
+    background: #2d4a3e;
+  }
   .hero-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.65); }
   .hero-blur-overlay {
     position: absolute;
     inset: 0;
     z-index: 1;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    mask-image: linear-gradient(to bottom, transparent 0%, transparent 35%, black 55%, black 100%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 35%, black 55%, black 100%);
+    background: linear-gradient(to bottom, transparent 0%, transparent 30%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0.75) 100%);
     pointer-events: none;
   }
   .hero-content { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; margin-top: 4rem; }
@@ -389,8 +411,8 @@ import Mail from '@lucide/svelte/icons/mail';
   .spacer-60 { height: 60px; }
 
   /* Vision / Mission / Goal */
-  .section-vmg { padding: 3rem 1.25rem; background: #EFE7F2; margin-top: 2rem; }
-  @media (min-width: 768px) { .section-vmg { padding: 5rem 2.5rem; margin-top: 1rem; } }
+  .section-vmg { padding: 3rem 1.25rem; background: #EFE7F2; }
+  @media (min-width: 768px) { .section-vmg { padding: 5rem 2.5rem; } }
   .vmg-card { background: white; padding: 1.75rem 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; border-bottom: 1px solid #4B0082; }
   .vmg-label { font-size: 0.75rem; font-weight: 700; margin-bottom: 0.75rem; color: #4B0082; letter-spacing: 2px; }
   .vmg-text { font-size: 11px; line-height: 1.625; color: #1f2937; margin-bottom: 1.25rem; }
