@@ -97,8 +97,8 @@ import Mail from '@lucide/svelte/icons/mail';
   <!-- NAVBAR -->
   <nav class="navbar" class:navbar-scrolled={scrolled}>
     <div class="nav-inner">
-      <button class="nav-menu-btn" aria-label="Menu" onclick={() => open = !open}>☰</button>
-      <a href="#" class="nav-brand">YOUTH ARISE NETWORK</a>
+      <button class="nav-menu-btn" class:nav-text-scrolled={scrolled} aria-label="Menu" onclick={() => open = !open}>☰</button>
+      <a href="#" class="nav-brand" class:nav-text-scrolled={scrolled}>YOUTH ARISE NETWORK</a>
       <div class="nav-links">
         {#each links as l}
           <a href={l.href} class="nav-link">{l.label}</a>
@@ -347,10 +347,11 @@ import Mail from '@lucide/svelte/icons/mail';
   @media (min-width: 768px) { .navbar { position: fixed; top: 0; z-index: 50; width: 100%; } }
   .nav-inner { max-width: 1280px; margin: 0 auto; padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
   @media (min-width: 768px) { .nav-inner { padding: 1rem 2.5rem; } }
-  .nav-menu-btn { display: block; font-size: 1.5rem; color: #4B0082; }
-  @media (min-width: 768px) { .nav-menu-btn { display: none; } }
-  .nav-brand { font-weight: 800; font-size: 0.75rem; letter-spacing: 0.025em; color: #4B0082; text-decoration: none; }
-  @media (min-width: 768px) { .nav-brand { font-size: 0.875rem; } }
+  .nav-menu-btn { display: block; font-size: 1.5rem; color: #ffffff; }
+  @media (min-width: 768px) { .nav-menu-btn { display: none; color: #4B0082; } }
+  .nav-brand { font-weight: 800; font-size: 0.75rem; letter-spacing: 0.025em; color: #ffffff; text-decoration: none; }
+  @media (min-width: 768px) { .nav-brand { font-size: 0.875rem; color: #4B0082; } }
+  .nav-text-scrolled { color: #4B0082 !important; }
   .nav-links { display: none; }
   @media (min-width: 768px) { .nav-links { display: flex; align-items: center; gap: 3rem; margin-left: auto; } }
   .nav-links a { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; color: #1A1A1A; text-decoration: none; }
@@ -471,19 +472,19 @@ import Mail from '@lucide/svelte/icons/mail';
   /* Donate / Volunteer */
   .section-donate { padding: 0 1.25rem 3rem; background: white; }
   @media (min-width: 768px) { .section-donate { padding: 0 2.5rem 4rem; } }
-  .donate-card { display: flex; flex-direction: column; background: #4B0082; color: white; }
+  .donate-card {border:#4B0082 solid 1px;  display: flex; flex-direction: column; background: white; color: #1A1A1A; }
   .donate-card-body { padding: 2rem; flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; }
   @media (min-width: 768px) { .donate-card-body { padding: 2.5rem; } }
-  .donate-card-label { font-size: 11px; font-weight: 700; margin-bottom: 1.5rem; letter-spacing: 0.05em; color: #F5C518; }
+  .donate-card-label { font-size: 11px; font-weight: 700; margin-bottom: 1.5rem; letter-spacing: 0.05em; color: #4B0082; }
   .donate-card-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem; }
   @media (min-width: 768px) { .donate-card-title { font-size: 1.5rem; } }
   .donate-card-desc { font-size: 0.75rem; line-height: 1.625; max-width: 24rem; }
   @media (min-width: 768px) { .donate-card-desc { font-size: 0.875rem; } }
-  .donate-card-btn { display: block; width: 100%; text-align: center; background: white; padding: 1rem; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.05em; color: #1A1A1A; text-decoration: none; }
+  .donate-card-btn { display: block; width: 100%; text-align: center; background: var(--btn); padding: 1rem; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.05em; color: #1A1A1A; text-decoration: none; }
   .donate-card-btn:hover { background: #f3f4f6; }
-  .volunteer-card { display: flex; flex-direction: column; background: #F5C518; color: #1A1A1A; }
+  .volunteer-card { border:#4B0082 solid 1px; display: flex; flex-direction: column; background: white; color: #1A1A1A; }
   .volunteer-card-label { font-size: 11px; font-weight: 700; margin-bottom: 1.5rem; letter-spacing: 0.05em; }
-  .volunteer-card-btn { display: block; width: 100%; text-align: center; padding: 1rem; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.05em; color: #1A1A1A; text-decoration: none; background: #F5C518; border-top: 1px solid #4B0082; }
+  .volunteer-card-btn { display: block; width: 100%; text-align: center; padding: 1rem; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.05em; color: #1A1A1A; text-decoration: none; background: var(--btn); border-top: 1px solid #4B0082; }
   .volunteer-card-btn:hover { opacity: 0.9; }
 
   /* Footer */
